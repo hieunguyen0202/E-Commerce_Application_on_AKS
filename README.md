@@ -39,7 +39,7 @@
   ```
   git clone https://github.com/hieunguyen0202/E-Commerce_Project_on_AKS.git
   ```
-- Go to `GKE` folder and `helm` folder and inside this folder run this command
+- Go to `AKS` folder and `helm` folder and inside this folder run this command
 
   ```
   kubectl create ns robot-shop
@@ -60,6 +60,42 @@
   ```
   kubectl get pods -n robot-shop
   kubectl get svc -n robot-shop
+  ```
+### If you use GKE cluster under GKE folder
+- Under `GKE/helm` folder, create new file
+
+  ```
+  vim storage-class.yaml
+  ```
+- Add information below
+
+  ```
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: default
+  provisioner: kubernetes.io/gce-pd
+  parameters:
+    type: pd-standard
+  ```
+- Apply to command:
+
+  ```
+  kubectl apply -f storage-class.yaml
+  ```
+- Check status
+
+  ```
+  kubectl get pvc -n robot-shop
+  ```
+- And run this command
+  ```
+  kubectl create ns robot-shop
+  ```
+- And package for all manifests file
+
+  ```
+  helm install robot-shop --namespace robot-shop .
   ```
 #### Create Ingress Service
 - Modify this `ingress.yaml` file
